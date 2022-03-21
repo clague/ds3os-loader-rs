@@ -1,10 +1,9 @@
 use std::process::Command;
-use anyhow::{Result, anyhow, bail};
+use anyhow::{Result, anyhow};
 use sysinfo::{ProcessExt, System, SystemExt, ProcessRefreshKind, Pid, PidExt};
 use lazy_static::lazy_static;
-use bytes::{Bytes, BytesMut, Buf, BufMut};
+use bytes::{Bytes, BytesMut, BufMut};
 use process_memory::{Memory, Pid as PidHandle, TryIntoProcessHandle, DataMember, CopyAddress};
-use futures::{stream, StreamExt};
 
 use crate::encrypt::tea32_encrypt;
 use crate::api::{Server, MasterServerApi};

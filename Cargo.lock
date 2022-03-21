@@ -171,15 +171,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fd16c4719339c4530435d38e511904438d07cce7950afa3718a84ac36c10e89e"
 
 [[package]]
-name = "cipher"
-version = "0.2.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "12f8e7987cbd042a63249497f41aed09f8e65add917ea6566effbc56578d6801"
-dependencies = [
- "generic-array",
-]
-
-[[package]]
 name = "clipboard-win"
 version = "4.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -516,7 +507,6 @@ dependencies = [
  "anyhow",
  "bytes",
  "cc",
- "futures",
  "iced",
  "iced_native",
  "lazy_static",
@@ -525,8 +515,6 @@ dependencies = [
  "serde",
  "serde_json",
  "sysinfo",
- "tea-soft",
- "tokio",
 ]
 
 [[package]]
@@ -774,16 +762,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c31b6d751ae2c7f11320402d34e41349dd1016f8d5d45e48c4312bc8625af50c"
 dependencies = [
  "byteorder",
-]
-
-[[package]]
-name = "generic-array"
-version = "0.14.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fd48d33ec7f05fbfa152300fdad764757cbded343c1aa1cff2fbaf4134851803"
-dependencies = [
- "typenum",
- "version_check",
 ]
 
 [[package]]
@@ -2192,16 +2170,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tea-soft"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5c8014acb5434b087385f677e2f2162ddef5a02ad620d5b694a87b928e15ad0b"
-dependencies = [
- "byteorder",
- "cipher",
-]
-
-[[package]]
 name = "tempfile"
 version = "3.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2356,12 +2324,6 @@ dependencies = [
  "rand",
  "static_assertions",
 ]
-
-[[package]]
-name = "typenum"
-version = "1.15.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dcf81ac59edc17cc8697ff311e8f5ef2d99fcbd9817b34cec66f90b6c3dfd987"
 
 [[package]]
 name = "ucd-trie"
