@@ -46,9 +46,11 @@ impl Launcher {
             .spawn()?;
         Ok(())
     }
-    pub async fn patch_game(pid: u32, api: MasterServerApi, server: Server, password: &str) -> Result<()> {
-        let pubkey = api.get_pubkey(&server.ip_addr, password).await?;
-        Self::patch(pid, &server.hostname, &pubkey).map(|_| ())
+    pub async fn patch_game(pid: u32, api: MasterServerApi, mut server: Server, password: &str) -> Result<()> {
+        if server.pubkey.is_empty() {
+            server.pubkey = api.get_pubkey(&server.ip_addr, password).await?;
+        }
+        Self::patch(pid, &server.hostname, &server.pubkey).map(|_| ())
     }
     pub fn find_process(&mut self) -> Result<u32> {
         self.sys.refresh_processes_specifics(ProcessRefreshKind::new());

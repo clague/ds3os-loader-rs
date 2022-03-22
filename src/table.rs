@@ -1,10 +1,8 @@
 use crate::api::MasterServerApi;
 
 use {
-    crate::{
-        localize::localized_string,
-        api::Server,
-    },
+    crate::api::Server,
+    crate::gui::FailReason,
     iced::{
         Column, Length, Row, Space, Text, Scrollable, scrollable,
         Command, Element, button, Button, Alignment, Radio
@@ -81,9 +79,9 @@ pub enum ListMessage {
     //SearchInputChanged(String),
     UpdateServerList,
     UpdateServerListComplete(Vec<Server>),
-    UpdateServerListFail(String),
+    ImportConfig(Vec<Server>),
+    Fail(FailReason, String),
     RowMessage(u32, RowMessage),
-    Nothing,
 }
 
 impl ServerList {
@@ -125,7 +123,7 @@ impl ServerList {
                                 ListMessage::UpdateServerListComplete(servers)
                             },
                             Err(e) => {
-                                ListMessage::UpdateServerListFail(e.to_string())
+                                ListMessage::Fail(FailReason::RefreshListFail, e.to_string())
                             }
                         }
                     }
@@ -134,7 +132,7 @@ impl ServerList {
             ListMessage::UpdateServerListComplete(servers) => {
                 self.rebuild_list(servers);
             },
-            ListMessage::UpdateServerListFail(e) => {},
+            ListMessage::Fail(_, _) => {},
             ListMessage::RowMessage(id, row_message) => {
                 match row_message {
                     RowMessage::Delete => {
@@ -150,7 +148,9 @@ impl ServerList {
                     },
                 }
             }
-            ListMessage::Nothing => {}
+            ListMessage::ImportConfig(servers) => {
+                self.import(servers);
+            }
         }
         Command::none()
     }
@@ -195,8 +195,8 @@ impl ServerList {
         );
     }
 
-    pub fn import(&mut self, mut servers: Vec<Server>) {
-        self.manual_import_list.append(&mut servers);
+    pub fn import(&mut self, servers: Vec<Server>) {
+        self.manual_import_list.append(&mut servers.clone());
         let mut id = self.rows.len() as u32;
         self.rows.append(&mut 
             servers.into_iter()
@@ -205,6 +205,6 @@ impl ServerList {
                     ServerRow::new(server, id, true)
                 }
             ).collect()
-        )
+        );
     }
 }

@@ -59,26 +59,28 @@ pub struct ApiResponse {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Server {
-    #[serde(rename = "IpAddress")]
+    #[serde(rename = "IpAddress", default)]
     pub ip_addr: String,
     #[serde(rename = "Hostname")]
     pub hostname: String,
-    #[serde(rename = "PrivateHostname")]
+    #[serde(rename = "PrivateHostname", default)]
     pub private_hostname: String,
-    #[serde(rename = "Description")]
+    #[serde(rename = "Description", default)]
     pub description: String,
-    #[serde(rename = "Name")]
+    #[serde(rename = "Name", default)]
     pub name: String,
-    #[serde(rename = "PlayerCount")]
+    #[serde(rename = "PlayerCount", default)]
     pub player_count: u32,
-    #[serde(rename = "PasswordRequired")]
+    #[serde(rename = "PasswordRequired", default)]
     pub password_required: bool,
-    #[serde(rename = "ModsWhiteList")]
+    #[serde(rename = "ModsWhiteList", default)]
     pub mods_white_list: String,
-    #[serde(rename = "ModsBlackList")]
+    #[serde(rename = "ModsBlackList", default)]
     pub mods_black_list: String,
-    #[serde(rename = "ModsRequiredList")]
+    #[serde(rename = "ModsRequiredList", default)]
     pub mods_required_list: String,
+    #[serde(rename = "PublicKey", default)]
+    pub pubkey: String,
 }
 
 #[derive(Clone)]

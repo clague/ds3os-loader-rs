@@ -9,7 +9,6 @@ extern "C" {
     fn set_key(k: *const u32);
     fn encrypt(v: *mut u8);
 }
-// All this is super inefficient, should be rewritten when time allows.
 
 pub fn tea32_encrypt(data: &BytesMut, key: &[u32;4]) -> Bytes {
     let length_rounded_to_block_size: usize = ((data.len() + (*TEA_BLOCK_SIZE - 1)) / *TEA_BLOCK_SIZE) * *TEA_BLOCK_SIZE;

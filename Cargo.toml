@@ -19,6 +19,8 @@ iced_native = { path = "../iced/native" }
 sysinfo = "0.23.5"
 bytes = "1.1.0"
 process-memory = "0.4.0"
+native-dialog = "0.6.3"
+sys-locale = "0.2.0"
 
 [profile.release]
 opt-level = 'z'
