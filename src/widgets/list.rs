@@ -36,15 +36,12 @@ impl ServerRow {
     }
 
     pub fn view(&mut self, selected: &usize) -> Element<RowMessage> {
-        let selection_radio = Radio::new(self.id, "", Some(*selected),  |_| RowMessage::ToggleSelection);
-        
         Row::new()
             .push(
                 Button::new(
                     &mut self.server_btn,
                     Row::new()
                         .align_items(Alignment::Center)
-                        .push(selection_radio)
                         .push(Text::new(&self.server.name).width(Length::FillPortion(1)))
                         .push(Text::new(&self.server.hostname).width(Length::FillPortion(1)))
                         .push(Text::new(&self.server.player_count.to_string()).width(Length::FillPortion(1)))
@@ -63,11 +60,6 @@ pub struct ServerList {
     pub rows: Vec<ServerRow>,
     pub selected: usize,
     pub manual_server_offset: usize,
-
-    head_btn_name: button::State,
-    head_btn_hostname: button::State,
-    head_btn_player_count: button::State,
-    head_btn_description: button::State,
 
     scrollable: scrollable::State,
 }
@@ -96,11 +88,6 @@ impl ServerList {
             }).collect(),
             selected: 0,
             manual_server_offset: 0,
-
-            head_btn_name: button::State::new(),
-            head_btn_hostname: button::State::new(),
-            head_btn_player_count: button::State::new(),
-            head_btn_description: button::State::new(),
 
             scrollable: scrollable::State::new(),
         }
@@ -153,7 +140,7 @@ impl ServerList {
     }
 
     pub fn view(&mut self, heads: [&str;3]) -> Element<ListMessage> {
-        let head = Row::with_children(heads.iter().map(|head| Text::new(*head).into()).collect());
+        let head = Row::with_children(heads.iter().map(|head| Text::new(*head).width(Length::FillPortion(1)).into()).collect());
         let scrollable = Scrollable::new(&mut self.scrollable)
             .push(
                 Column::with_children(

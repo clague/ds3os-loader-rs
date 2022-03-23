@@ -137,10 +137,7 @@ impl Application for LoaderMainInterface {
                     TopBarMessage::ChooseConfigFile => {
                         let mes = match choose_config_file() {
                             Ok(servers) => {
-                                if servers.len() == 0 {
-                                    Message::Fail(FailReason::ChooseFileFail, "".into())
-                                }
-                                else { Message::ListMessage(ListMessage::ImportConfig(servers)) }
+                                Message::ListMessage(ListMessage::ImportConfig(servers))
                             },
                             Err(e) => {
                                 Message::Fail(FailReason::ChooseFileFail, e.to_string())
@@ -205,8 +202,8 @@ impl Application for LoaderMainInterface {
 }
 fn choose_config_file() -> Result<Vec<Server>> {
     Ok(FileDialog::new()
-        .add_filter("Server Config File", &["ds3osconfig"])
-        .add_filter("All files", &["*"])
+        .add_filter("Server Config File (*.ds3osconfig)", &["ds3osconfig"])
+        .add_filter("All files (*.*)", &["*"])
         .set_location("~/")
         .show_open_multiple_file()?
         .into_iter()

@@ -14,9 +14,8 @@ lazy_static = "1.4.0"
 serde_json = "1.0.79"
 serde = { version = "1.0.136", features = ["derive"] }
 anyhow = "1.0.56"
-iced = { path = "../iced/", features = ["tokio", "default_system_font"] }
+iced = { path = "../iced/",  default-features = false, features = ["tokio", "glow", "glow_default_system_font"] }
 iced_aw = { path = "../iced_aw/", default-features = false, features = ["floating_button", "split"] }
-iced_native = { path = "../iced/native" }
 sysinfo = "0.23.5"
 bytes = "1.1.0"
 process-memory = "0.4.0"

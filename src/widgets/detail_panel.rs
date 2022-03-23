@@ -1,6 +1,5 @@
-use iced::{button, Button, Command, Element, Length, Text, Alignment, Column, Scrollable, scrollable, TextInput, text_input};
+use iced::{button, Button, Element, Length, Text, Alignment, Column, Scrollable, scrollable, TextInput, text_input};
 use iced_aw::FloatingButton;
-use iced_native::{text, Widget};
 
 use crate::api::Server;
 use crate::gui::{ICON_FONT, Icon};
@@ -18,10 +17,6 @@ impl DetailPanel {
             patch_btn: button::State::new(),
             passwd_input: text_input::State::new(),
         }
-    }
-
-    pub fn update(&mut self, message: !) -> Command<!> {
-        Command::none()
     }
 
     pub fn view(&mut self, server: Server, passwd: &str) -> Element<crate::gui::Message> {
