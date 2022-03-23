@@ -100,6 +100,12 @@ checksum = "0d8c1fef690941d3e7788d328517591fecc684c084084702d6ff1641e993699a"
 
 [[package]]
 name = "bumpalo"
+version = "2.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ad807f2fc2bf185eeb98ff3a901bd46dc5ad58163d0fa4577ba0d25674d71708"
+
+[[package]]
+name = "bumpalo"
 version = "3.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a4a45a46ab1f2412e53d3a0ade76ffad2025804294569aae387231a0cd6e0899"
@@ -505,6 +511,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "dodrio"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b7593dfc68e57dc1d058ada0f151ba07f4b05183c4da4c4df8ff651a81ef0fab"
+dependencies = [
+ "bumpalo 2.6.0",
+ "cfg-if 0.1.10",
+ "fxhash",
+ "js-sys",
+ "longest-increasing-subsequence",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+]
+
+[[package]]
 name = "downcast-rs"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -518,6 +540,7 @@ dependencies = [
  "bytes",
  "cc",
  "iced",
+ "iced_aw",
  "iced_native",
  "lazy_static",
  "native-dialog",
@@ -1024,11 +1047,24 @@ dependencies = [
 name = "iced"
 version = "0.3.0"
 dependencies = [
- "iced_core",
- "iced_futures",
+ "iced_core 0.4.0",
+ "iced_futures 0.3.0",
  "iced_wgpu",
  "iced_winit",
  "thiserror",
+]
+
+[[package]]
+name = "iced_aw"
+version = "0.1.0"
+dependencies = [
+ "dodrio",
+ "iced_graphics",
+ "iced_native",
+ "iced_style 0.3.0",
+ "iced_web",
+ "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]
@@ -1038,6 +1074,12 @@ dependencies = [
  "bitflags",
  "wasm-timer",
 ]
+
+[[package]]
+name = "iced_core"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fafe4a5eeee85876f3bad347338456e0f3e7fcdc2381a5ce6c3ba2a60dd769bf"
 
 [[package]]
 name = "iced_futures"
@@ -1051,6 +1093,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "iced_futures"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a89fdde2cb9c5807d23f40230297122e480428c660ad7d0373e625cd0725afa1"
+dependencies = [
+ "futures",
+ "log",
+ "wasm-bindgen-futures",
+]
+
+[[package]]
 name = "iced_graphics"
 version = "0.2.0"
 dependencies = [
@@ -1058,7 +1111,7 @@ dependencies = [
  "font-kit",
  "glam",
  "iced_native",
- "iced_style",
+ "iced_style 0.3.0",
  "raw-window-handle 0.4.2",
  "thiserror",
 ]
@@ -1067,9 +1120,9 @@ dependencies = [
 name = "iced_native"
 version = "0.4.0"
 dependencies = [
- "iced_core",
- "iced_futures",
- "iced_style",
+ "iced_core 0.4.0",
+ "iced_futures 0.3.0",
+ "iced_style 0.3.0",
  "num-traits",
  "twox-hash",
  "unicode-segmentation",
@@ -1079,7 +1132,32 @@ dependencies = [
 name = "iced_style"
 version = "0.3.0"
 dependencies = [
- "iced_core",
+ "iced_core 0.4.0",
+]
+
+[[package]]
+name = "iced_style"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ca93066a80759bfb31f2900d45ca4cf7500b88611607da5e380143badfcd7837"
+dependencies = [
+ "iced_core 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "iced_web"
+version = "0.4.0"
+dependencies = [
+ "base64",
+ "dodrio",
+ "iced_core 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iced_futures 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iced_style 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-traits",
+ "url",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
 ]
 
 [[package]]
@@ -1104,7 +1182,7 @@ dependencies = [
 name = "iced_winit"
 version = "0.3.0"
 dependencies = [
- "iced_futures",
+ "iced_futures 0.3.0",
  "iced_graphics",
  "iced_native",
  "log",
@@ -1251,6 +1329,12 @@ checksum = "51b9bbe6c47d51fc3e1a9b945965946b4c44142ab8792c50835a980d362c2710"
 dependencies = [
  "cfg-if 1.0.0",
 ]
+
+[[package]]
+name = "longest-increasing-subsequence"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b3bd0dd2cd90571056fdb71f6275fada10131182f84899f4b2a916e565d81d86"
 
 [[package]]
 name = "mach"
@@ -2482,7 +2566,7 @@ version = "0.2.79"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b21c0df030f5a177f3cba22e9bc4322695ec43e7257d865302900290bcdedca"
 dependencies = [
- "bumpalo",
+ "bumpalo 3.9.1",
  "lazy_static",
  "log",
  "proc-macro2",

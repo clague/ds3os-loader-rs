@@ -3,10 +3,11 @@ use anyhow::{Result, anyhow};
 use sysinfo::{ProcessExt, System, SystemExt, ProcessRefreshKind, Pid, PidExt};
 use lazy_static::lazy_static;
 use bytes::{Bytes, BytesMut, BufMut};
-use process_memory::{Memory, Pid as PidHandle, TryIntoProcessHandle, DataMember, CopyAddress};
+use process_memory::{Memory, Pid as PidHandle, TryIntoProcessHandle, DataMember};
 
 use crate::encrypt::tea32_encrypt;
 use crate::api::{Server, MasterServerApi};
+use crate::gui::FailReason;
 
 lazy_static! {
     pub static ref ServerInfoTEAEncryptionKey: [u32;4] = [
@@ -30,13 +31,13 @@ lazy_static! {
     pub static ref ServerInfoAddress: usize = 0x144F4A5B1;
 }
 
-pub struct Launcher {
+pub struct Patches {
     sys: System,
 }
 
-impl Launcher {
+impl Patches {
     pub fn new() -> Self {
-        Launcher {
+        Patches {
             sys: System::new(),
         }
     }
@@ -46,12 +47,7 @@ impl Launcher {
             .spawn()?;
         Ok(())
     }
-    pub async fn patch_game(pid: u32, api: MasterServerApi, mut server: Server, password: &str) -> Result<()> {
-        if server.pubkey.is_empty() {
-            server.pubkey = api.get_pubkey(&server.ip_addr, password).await?;
-        }
-        Self::patch(pid, &server.hostname, &server.pubkey).map(|_| ())
-    }
+
     pub fn find_process(&mut self) -> Result<u32> {
         self.sys.refresh_processes_specifics(ProcessRefreshKind::new());
         let mut res: u32 = 0;
@@ -67,7 +63,7 @@ impl Launcher {
         if res == 0 { Err(anyhow!("Can't find process")) } else { Ok(res) }
     }
 
-    fn patch(pid: u32, hostname: &str, pubkey: &str) -> Result<usize> {
+    pub fn patch(pid: u32, hostname: &str, pubkey: &str) -> Result<usize> {
         let handle = (pid as i32 as PidHandle).try_into_process_handle()?;
         let mut member = DataMember::new_offset(handle, vec![*ServerInfoAddress]);
 

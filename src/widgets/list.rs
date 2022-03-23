@@ -10,7 +10,7 @@ use {
 };
 
 pub struct ServerRow {
-    pub id: u32,
+    pub id: usize,
     pub server: Server,
     pub is_manual: bool,
 
@@ -25,7 +25,7 @@ pub enum RowMessage {
 }
 
 impl ServerRow {
-    pub fn new(server: Server, id: u32, is_manual: bool) -> Self {
+    pub fn new(server: Server, id: usize, is_manual: bool) -> Self {
         Self {
             id,
             server,
@@ -35,7 +35,7 @@ impl ServerRow {
         }
     }
 
-    pub fn view(&mut self, selected: &u32) -> Element<RowMessage> {
+    pub fn view(&mut self, selected: &usize) -> Element<RowMessage> {
         let selection_radio = Radio::new(self.id, "", Some(*selected),  |_| RowMessage::ToggleSelection);
         
         Row::new()
@@ -48,7 +48,6 @@ impl ServerRow {
                         .push(Text::new(&self.server.name).width(Length::FillPortion(1)))
                         .push(Text::new(&self.server.hostname).width(Length::FillPortion(1)))
                         .push(Text::new(&self.server.player_count.to_string()).width(Length::FillPortion(1)))
-                        .push(Text::new(&self.server.description).width(Length::FillPortion(1)))
                 )
                 .padding(8)
                 .width(Length::Fill)
@@ -62,9 +61,8 @@ impl ServerRow {
 
 pub struct ServerList {
     pub rows: Vec<ServerRow>,
-    pub api: MasterServerApi,
-    pub selected: u32,
-    pub manual_import_list: Vec<Server>,
+    pub selected: usize,
+    pub manual_server_offset: usize,
 
     head_btn_name: button::State,
     head_btn_hostname: button::State,
@@ -81,7 +79,7 @@ pub enum ListMessage {
     UpdateServerListComplete(Vec<Server>),
     ImportConfig(Vec<Server>),
     Fail(FailReason, String),
-    RowMessage(u32, RowMessage),
+    RowMessage(usize, RowMessage),
 }
 
 impl ServerList {
@@ -96,9 +94,8 @@ impl ServerList {
                 id += 1;
                 ServerRow::new(server, id, false)
             }).collect(),
-            api: MasterServerApi::new(*crate::MASTER_SERVER_ADDR_DEF, 1).unwrap(),
             selected: 0,
-            manual_import_list: Vec::new(),
+            manual_server_offset: 0,
 
             head_btn_name: button::State::new(),
             head_btn_hostname: button::State::new(),
@@ -109,10 +106,10 @@ impl ServerList {
         }
     }
 
-    pub fn update(&mut self, message: ListMessage) -> Command<ListMessage> {
+    pub fn update(&mut self, message: ListMessage, api: &MasterServerApi) -> Command<ListMessage> {
         match message {
             ListMessage::UpdateServerList => {
-                let api = self.api.clone();
+                let api = api.clone();
                 return Command::perform(
                     async move {
                         api.list_servers().await
@@ -155,7 +152,7 @@ impl ServerList {
         Command::none()
     }
 
-    pub fn view(&mut self, heads: [&str;4]) -> Element<ListMessage> {
+    pub fn view(&mut self, heads: [&str;3]) -> Element<ListMessage> {
         let head = Row::with_children(heads.iter().map(|head| Text::new(*head).into()).collect());
         let scrollable = Scrollable::new(&mut self.scrollable)
             .push(
@@ -175,36 +172,52 @@ impl ServerList {
             .push(head)
             .push(scrollable)
             .height(Length::Fill)
+            .width(Length::Fill)
             .into()
     }
 
-    fn rebuild_list(&mut self, servers: Vec<Server>) {
-        let mut id: u32 = 0;
-        self.rows = servers.into_iter().map(|server| {
-            id += 1;
-            ServerRow::new(server, id, false)
-        }).collect();
-        self.rows.append(&mut 
-            self.manual_import_list
-                .iter()
-                .map( |server| {
-                    id += 1;
-                    ServerRow::new(server.clone(), id, true)
-                }
-            ).collect()
-        );
+    pub fn find_by_id(&self, id: usize) -> Option<&ServerRow> {
+        self.rows.iter().filter(|row| row.id == id).next()
     }
 
-    pub fn import(&mut self, servers: Vec<Server>) {
-        self.manual_import_list.append(&mut servers.clone());
-        let mut id = self.rows.len() as u32;
-        self.rows.append(&mut 
+    pub fn find_selected(&self) -> Option<&ServerRow> {
+        self.find_by_id(self.selected)
+    }
+
+    pub fn find_by_id_mut(&mut self, id: usize) -> Option<&mut ServerRow> {
+        self.rows.iter_mut().filter(|row| row.id == id).next()
+    }
+
+    pub fn find_selected_mut(&mut self) -> Option<&mut ServerRow> {
+        self.find_by_id_mut(self.selected)
+    }
+
+    fn rebuild_list(&mut self, servers: Vec<Server>) {
+        self.rows.retain(|row| row.is_manual);
+        self.rows
+            .append(&mut
+                servers.into_iter()
+                    .enumerate()
+                    .map(|(id, server)| ServerRow::new(server, id + 2016, false))
+                    .collect()
+            );
+    }
+
+    pub fn import(&mut self, mut servers: Vec<Server>) {
+        servers.retain(|server| {
+            self.rows
+                .iter()
+                .find(|row| row.server.hostname == server.hostname)
+                .is_none()
+        });
+        let offset = self.manual_server_offset;
+        self.manual_server_offset += servers.len();
+        self.rows.splice(0..0, 
             servers.into_iter()
-                .map( |server| {
-                    id += 1;
-                    ServerRow::new(server, id, true)
-                }
-            ).collect()
-        );
+                .enumerate()
+                .map(|(id, server)| {
+                    ServerRow::new(server, id + offset, true)
+                })
+            );
     }
 }

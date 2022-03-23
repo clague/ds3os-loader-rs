@@ -2,6 +2,12 @@ use serde_json::json;
 use anyhow::{Result, anyhow};
 use serde::{Serialize, Deserialize};
 use reqwest::{Client, header::*, Url, IntoUrl, Method};
+use lazy_static::lazy_static;
+
+lazy_static! {
+    pub static ref MASTER_SERVER_ADDR_DEF: &'static str = "http://timleonard.uk:50020/api/v1/servers";
+}
+
 
 #[derive(Clone)]
 pub enum ApiVersion {
@@ -73,6 +79,8 @@ pub struct Server {
     pub player_count: u32,
     #[serde(rename = "PasswordRequired", default)]
     pub password_required: bool,
+    #[serde(rename = "Password", default)]
+    pub passwd: String,
     #[serde(rename = "ModsWhiteList", default)]
     pub mods_white_list: String,
     #[serde(rename = "ModsBlackList", default)]
@@ -85,13 +93,13 @@ pub struct Server {
 
 #[derive(Clone)]
 pub struct MasterServerApi {
-    server_api: Url,
+    api_url: Url,
     http_client: Client,
     version: ApiVersion,
 }
 
 impl MasterServerApi {
-    pub fn new<U, V>(hostname: U, version: V) -> Result<MasterServerApi>
+    pub fn new<U, V>(api_url: U, version: V) -> Result<MasterServerApi>
     where
         U: IntoUrl,
         V: Into<ApiVersion>,
@@ -105,7 +113,7 @@ impl MasterServerApi {
             .unwrap_or_default();
 
         Ok(MasterServerApi {
-            server_api: hostname.into_url()?.join("/api/v1/servers/")?,
+            api_url: api_url.into_url()?,
             http_client,
             version: version.into(),
         })
@@ -134,7 +142,7 @@ impl MasterServerApi {
     }
 
     pub async fn list_servers(self) -> Result<Vec<Server>> {
-        let res = self.request::<String>(Method::GET, &self.server_api, None).await?;
+        let res = self.request::<String>(Method::GET, &self.api_url, None).await?;
         if res.status == "success" && res.servers.len() > 0{
             Ok(res.servers)
         }
@@ -143,17 +151,17 @@ impl MasterServerApi {
         }
     }
 
-    pub async fn get_pubkey(self, ip_addr: &str, password: &str) -> Result<String> {
+    pub async fn get_pubkey(&self, ip_addr: &str, password: &str) -> Result<String> {
         let req_body = json!({
             "password": password,
         });
-        let res = self.request(Method::POST, &self.server_api.join(&format!("{}/public_key", ip_addr))?, Some(req_body)).await?;
+        let res = self.request(Method::POST, &self.api_url.join(&format!("{}/public_key", ip_addr))?, Some(req_body)).await?;
         if res.status == "success" && !res.public_key.is_empty() {
             Ok(res.public_key)
         }
         else {
-            println!("{:#?}", res);
-            Err(anyhow!("Failed to get public key!"))
+            //println!("{:#?}", res);
+            Err(anyhow!(res.message))
         }
     }
 }
