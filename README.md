@@ -2,7 +2,23 @@
 Another ds3os loader
 
 ## Usage
-Press update button to fetch the server list, run the game from steam, select a server and press launch button (which should named "patch").
+This program only patch memory of the running process, so you need launch game from steam first.
 
 ## Build
-Run `cargo build --release`
+Clone https://github.com/iced-rs/iced and https://github.com/iced-rs/iced_aw to the same location of this repo.
+
+Like this:
+```
+parent
+|
+├── ds3os-loader-rs
+│   
+├── iced
+│   
+├── iced_aw
+|   
+```
+then go into the ds3os-loader-rs and run
+`cargo build --release`
+
+
