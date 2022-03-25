@@ -5,7 +5,7 @@ Another ds3os loader
 This program only patch memory of the running process, so you need launch game from steam first.
 
 ## Build
-Clone https://github.com/iced-rs/iced and https://github.com/iced-rs/iced_aw to the same location of this repo.
+Clone https://github.com/iced-rs/iced and https://github.com/clague/iced_aw to the same location of this repo.
 
 Like this:
 ```
