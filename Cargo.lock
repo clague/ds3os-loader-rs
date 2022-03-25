@@ -1018,8 +1018,8 @@ dependencies = [
 name = "iced"
 version = "0.3.0"
 dependencies = [
- "iced_core 0.4.0",
- "iced_futures 0.3.0",
+ "iced_core",
+ "iced_futures",
  "iced_glow",
  "iced_glutin",
  "iced_winit",
@@ -1033,7 +1033,7 @@ dependencies = [
  "dodrio",
  "iced_graphics",
  "iced_native",
- "iced_style 0.3.0",
+ "iced_style",
  "iced_web",
  "wasm-bindgen",
  "web-sys",
@@ -1048,12 +1048,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "iced_core"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fafe4a5eeee85876f3bad347338456e0f3e7fcdc2381a5ce6c3ba2a60dd769bf"
-
-[[package]]
 name = "iced_futures"
 version = "0.3.0"
 dependencies = [
@@ -1062,17 +1056,6 @@ dependencies = [
  "tokio",
  "wasm-bindgen-futures",
  "wasm-timer",
-]
-
-[[package]]
-name = "iced_futures"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a89fdde2cb9c5807d23f40230297122e480428c660ad7d0373e625cd0725afa1"
-dependencies = [
- "futures",
- "log",
- "wasm-bindgen-futures",
 ]
 
 [[package]]
@@ -1107,7 +1090,7 @@ dependencies = [
  "font-kit",
  "glam",
  "iced_native",
- "iced_style 0.3.0",
+ "iced_style",
  "raw-window-handle 0.4.2",
  "thiserror",
 ]
@@ -1116,9 +1099,9 @@ dependencies = [
 name = "iced_native"
 version = "0.4.0"
 dependencies = [
- "iced_core 0.4.0",
- "iced_futures 0.3.0",
- "iced_style 0.3.0",
+ "iced_core",
+ "iced_futures",
+ "iced_style",
  "num-traits",
  "twox-hash",
  "unicode-segmentation",
@@ -1128,16 +1111,7 @@ dependencies = [
 name = "iced_style"
 version = "0.3.0"
 dependencies = [
- "iced_core 0.4.0",
-]
-
-[[package]]
-name = "iced_style"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca93066a80759bfb31f2900d45ca4cf7500b88611607da5e380143badfcd7837"
-dependencies = [
- "iced_core 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iced_core",
 ]
 
 [[package]]
@@ -1146,9 +1120,9 @@ version = "0.4.0"
 dependencies = [
  "base64",
  "dodrio",
- "iced_core 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "iced_futures 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "iced_style 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iced_core",
+ "iced_futures",
+ "iced_style",
  "num-traits",
  "url",
  "wasm-bindgen",
@@ -1160,7 +1134,7 @@ dependencies = [
 name = "iced_winit"
 version = "0.3.0"
 dependencies = [
- "iced_futures 0.3.0",
+ "iced_futures",
  "iced_graphics",
  "iced_native",
  "log",
