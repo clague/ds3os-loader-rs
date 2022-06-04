@@ -1,4 +1,3 @@
-#![feature(never_type)]
 #![windows_subsystem = "windows"]
 use std::fs::File;
 use std::io::Read;

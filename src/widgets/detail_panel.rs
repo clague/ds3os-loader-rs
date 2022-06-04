@@ -3,7 +3,7 @@ use iced_aw::FloatingButton;
 
 use crate::api::Server;
 use crate::gui::{ICON_FONT, Icon};
-use crate::localize::{TextLocalizedString, TextType::*};
+use crate::localize::{TEXT_LOCALIZED_STRING, TextType::*};
 pub struct DetailPanel {
     srcollable: scrollable::State,
     patch_btn: button::State,
@@ -30,10 +30,10 @@ impl DetailPanel {
 
         let password_required_text = Text::new(&format!("{}: {}", "Password: ", 
             if server.password_required {
-                TextLocalizedString[&PasswordRequired]
+                TEXT_LOCALIZED_STRING[&PasswordRequired]
             }
             else {
-                TextLocalizedString[&PasswordNotRequired]
+                TEXT_LOCALIZED_STRING[&PasswordNotRequired]
             }
         ));
 

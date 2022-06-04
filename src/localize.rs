@@ -1,9 +1,9 @@
-use std::{collections::HashMap, hash::Hash, sync::Mutex, ops::DerefMut};
+use std::{collections::HashMap, hash::Hash};
 
 use crate::gui::FailReason;
 
 use lazy_static::lazy_static;
-use anyhow::{Result, anyhow};
+use anyhow::Result;
 use sys_locale::get_locale;
 
 #[derive(Eq, PartialEq, Hash)]
@@ -14,7 +14,7 @@ pub enum Language {
 }
 
 lazy_static! {
-    static ref FailReasonLocalizedString_: HashMap<Language, HashMap<FailReason, &'static str>> = HashMap::from([
+    static ref FAIL_REASON_LOCALIZED_STRING_: HashMap<Language, HashMap<FailReason, &'static str>> = HashMap::from([
         (Language::English, HashMap::from([
             (FailReason::ChooseFileFail, "Invalid file choosen!"),
             (FailReason::RefreshListFail, "Can't refresh the server list!"),
@@ -33,7 +33,7 @@ lazy_static! {
         ])),
     ]);
 
-    static ref TextLocalizedString_: HashMap<Language, HashMap<TextType, &'static str>> = HashMap::from([
+    static ref TEXT_LOCALIZED_STRING_: HashMap<Language, HashMap<TextType, &'static str>> = HashMap::from([
         (Language::English, HashMap::from([
             (TextType::PasswordRequired, "Need password"),
             (TextType::PasswordNotRequired, "No password"),
@@ -44,9 +44,9 @@ lazy_static! {
         ])),
     ]);
 
-    pub static ref FailReasonLocalizedString: &'static HashMap<FailReason, &'static str> = &FailReasonLocalizedString_[&Language::English];
+    pub static ref FAIL_REASON_LOCALIZED_STRING: &'static HashMap<FailReason, &'static str> = &FAIL_REASON_LOCALIZED_STRING_[&Language::English];
 
-    pub static ref TextLocalizedString: &'static HashMap<TextType, &'static str> = &TextLocalizedString_[&Language::English];
+    pub static ref TEXT_LOCALIZED_STRING: &'static HashMap<TextType, &'static str> = &TEXT_LOCALIZED_STRING_[&Language::English];
 }
 pub fn set_language(mut lang: Language) -> Result<()> {
     if lang == Language::Auto {
@@ -61,8 +61,8 @@ pub fn set_language(mut lang: Language) -> Result<()> {
     unsafe {
         type F = &'static HashMap<FailReason, &'static str>;
         type T = &'static HashMap<TextType, &'static str>;
-        *(&(*FailReasonLocalizedString) as *const F as *mut F) = &FailReasonLocalizedString_[&lang];
-        *(&(*TextLocalizedString) as *const T as *mut T) = &TextLocalizedString_[&lang];
+        *(&(*FAIL_REASON_LOCALIZED_STRING) as *const F as *mut F) = &FAIL_REASON_LOCALIZED_STRING_[&lang];
+        *(&(*TEXT_LOCALIZED_STRING) as *const T as *mut T) = &TEXT_LOCALIZED_STRING_[&lang];
     };
     Ok(())
 }

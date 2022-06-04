@@ -10,7 +10,7 @@ use crate::patch::Patches;
 use crate::widgets::list::{ServerList, ListMessage, RowMessage};
 use crate::widgets::topbar::{TopBar, TopBarMessage};
 use crate::widgets::detail_panel::DetailPanel;
-use crate::localize::FailReasonLocalizedString;
+use crate::localize::FAIL_REASON_LOCALIZED_STRING;
 
 pub static ICON_FONT: Font = Font::External { 
     name: "Icons",
@@ -151,7 +151,7 @@ impl Application for LoaderMainInterface {
                 }
             },
             Message::Fail(reason, description) => {
-                let text = format!("{}\nDetail: {}", FailReasonLocalizedString[&reason], &description);
+                let text = format!("{}\nDetail: {}", FAIL_REASON_LOCALIZED_STRING[&reason], &description);
                 if let Err(e) = MessageDialog::new()
                     .set_title("Error")
                     //.set_type(MessageType::Error)
@@ -238,6 +238,7 @@ fn map_topbar_message(m: TopBarMessage) -> Message {
     }
 }
 
+#[allow(dead_code)]
 pub enum Icon {
     Refresh,
     TrashBinLight,

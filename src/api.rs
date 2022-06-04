@@ -5,7 +5,7 @@ use reqwest::{Client, header::*, Url, IntoUrl, Method};
 use lazy_static::lazy_static;
 
 lazy_static! {
-    pub static ref MASTER_SERVER_ADDR_DEF: &'static str = "http://timleonard.uk:50020/api/v1/servers/";
+    pub static ref MASTER_SERVER_ADDR_DEF: &'static str = "http://ds3os-master.timleonard.uk:50020/api/v1/servers/";
 }
 
 
@@ -91,6 +91,7 @@ pub struct Server {
     pub pubkey: String,
 }
 
+#[allow(dead_code)]
 #[derive(Clone)]
 pub struct MasterServerApi {
     api_url: Url,

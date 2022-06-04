@@ -5,7 +5,7 @@ use {
     crate::gui::FailReason,
     iced::{
         Column, Length, Row, Space, Text, Scrollable, scrollable,
-        Command, Element, button, Button, Alignment, Radio
+        Command, Element, button, Button, Alignment
     },
 };
 
@@ -15,9 +15,9 @@ pub struct ServerRow {
     pub is_manual: bool,
 
     server_btn: button::State,
-    delete_btn: button::State,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Debug)]
 pub enum RowMessage {
     Delete,
@@ -31,11 +31,10 @@ impl ServerRow {
             server,
             is_manual,
             server_btn: button::State::new(),
-            delete_btn: button::State::new(),
         }
     }
 
-    pub fn view(&mut self, selected: &usize) -> Element<RowMessage> {
+    pub fn view(&mut self, _selected: &usize) -> Element<RowMessage> {
         Row::new()
             .push(
                 Button::new(
@@ -124,7 +123,7 @@ impl ServerList {
                     }
                     RowMessage::ToggleSelection => {
                         match self.rows.iter_mut().filter(|row| row.id == id).next() {
-                            Some(row) => {
+                            Some(_) => {
                                 self.selected = id
                             }, 
                             None => {}
@@ -165,10 +164,6 @@ impl ServerList {
 
     pub fn find_by_id(&self, id: usize) -> Option<&ServerRow> {
         self.rows.iter().filter(|row| row.id == id).next()
-    }
-
-    pub fn find_selected(&self) -> Option<&ServerRow> {
-        self.find_by_id(self.selected)
     }
 
     pub fn find_by_id_mut(&mut self, id: usize) -> Option<&mut ServerRow> {
