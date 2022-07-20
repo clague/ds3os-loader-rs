@@ -2,23 +2,15 @@
 Another ds3os loader
 
 ## Usage
+
 This program only patch memory of the running process, so you need launch game from steam first.
 
+You may need some dev packages in debian-based distro or [you cannot launch](https://github.com/clague/ds3os-loader-rs/issues/1), for example: `libexpat-dev libfreetype-dev libssl-dev`.
+
 ## Build
-Clone https://github.com/iced-rs/iced and https://github.com/clague/iced_aw to the same location of this repo.
 
-Like this:
-```
-parent
-|
-├── ds3os-loader-rs
-│   
-├── iced
-│   
-├── iced_aw
-|   
-```
-then go into the ds3os-loader-rs and run
+First you need to install rust compiler, you can set up compile environment by using the [rustup](https://rustup.rs/).
+
+Then clone this repo in your file system and run
+
 `cargo build --release`
-
-
